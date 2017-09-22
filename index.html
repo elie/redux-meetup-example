@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.7.2/redux.js"></script>
+  <script>
+    var DEFAULT_STATE = {
+      todos: [],
+      id: 0
+    }
+
+    function rootReducer(state = DEFAULT_STATE, action){
+      if(action.type === "ADD_TODO"){
+        var newState = {...state}
+        var newTodo = {task: action.payload, id: ++newState.id}
+        var newTodos = newState.todos.concat(newTodo)
+        newState.todos = newTodos
+        return newState
+      }
+      if(action.type === "REMOVE_TODO"){
+        var todos = state.todos.filter(todo => todo.id !== action.payload)
+        return {...state, todos}
+      }
+
+      return state
+    }
+
+    var store = Redux.createStore(allReducers)
+
+    function addTodo(task){
+      return {
+        type: "ADD_TODO",
+        payload: task
+      }
+    }
+
+    function removeTodo(id){
+      return {
+        type: "REMOVE_TODO",
+        payload: id
+      }
+    }
+
+    store.dispatch(addTodo('Learn Redux'))
+    store.dispatch(addTodo('Go Home!'))
+    store.dispatch(addTodo('THIS IS TOUGH!!!'))
+    store.dispatch(removeTodo(2))
+
+  </script>
+</body>
+</html>
